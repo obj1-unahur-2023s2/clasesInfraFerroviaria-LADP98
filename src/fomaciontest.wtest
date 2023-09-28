@@ -1,0 +1,83 @@
+import formacion.*
+import vagones.*
+describe "Formacion" {
+	const formacion = new Formacion()
+	const pasajero_1 = new Pasajero(ancho=4, largo=10, tieneBanios=true)
+	const pasajero_2 = new Pasajero(ancho=2, largo=7, tieneBanios=false, estaOrdenado=false)
+	const carga_1 = new Carga(cargaMaximaIdeal=6800 , maderasSueltas=5)
+	const dormitorio_1= new Dormitorio(cantidadCompartimientos=8, camasPorCompartimiento=3)
+
+	method initialize() {
+		formacion.desarmarFormacion()
+		formacion.agregarVagon(pasajero_1)
+		formacion.agregarVagon(pasajero_2)
+		formacion.agregarVagon(carga_1)
+		formacion.agregarVagon(dormitorio_1)
+	}
+	
+	test "cuantos pasajeros puede llevar antes del Matenimiento" {
+		assert.equals(165, formacion.cuantosPasajerosPuedeLLevar())
+	}
+	
+	test "cuantos pasajeros puede llevar despues del mantenimiento" {
+		formacion.realizarMantenimientoVagones()
+		assert.equals(180, formacion.cuantosPasajerosPuedeLLevar())
+	}
+	
+	test "cantidad vagones populares antes del Matenimiento" {
+		assert.equals(1, formacion.cantidadVagonesPopulares())
+	}
+	
+	test "cantidad vagones populares despues del mantenimiento" {
+		formacion.realizarMantenimientoVagones()
+		assert.equals(2, formacion.cantidadVagonesPopulares())
+	}
+	
+	test "es formacion carguera antes del Matenimiento" {
+		assert.notThat(formacion.esFormacionCarguera())
+	}
+	
+	test "es formacion carguera despues del mantenimiento" {
+		formacion.realizarMantenimientoVagones()
+		assert.notThat(formacion.esFormacionCarguera())
+	}
+
+	test "dispersion de pesos antes del Matenimiento" {
+		assert.equals(4220, formacion.dispersionDePesos())
+	}
+	
+	test " dispersion de pesos despues del mantenimiento" {
+		formacion.realizarMantenimientoVagones()
+		assert.equals(3200, formacion.dispersionDePesos())
+	}
+	
+	test "cantidad de baños antes del Matenimiento" {
+		assert.equals(2, formacion.cantidDeBanios())
+	}
+	
+	test " cantidad de baños despues del mantenimiento" {
+		formacion.realizarMantenimientoVagones()
+		assert.equals(2, formacion.cantidDeBanios())
+	}
+	
+	test "no esta organizada " {
+		assert.notThat(formacion.estaOrganizada())
+	}
+	
+	test "esta organizada con ultimo de carga" {
+		formacion.desarmarFormacion()
+		formacion.agregarVagon(pasajero_1)
+		formacion.agregarVagon(dormitorio_1)
+		formacion.agregarVagon(pasajero_2)
+		formacion.agregarVagon(carga_1)
+		assert.that(formacion.estaOrganizada())		
+	}
+
+	test "esta organizada con sin vagones de carga" {
+		formacion.desarmarFormacion()
+		formacion.agregarVagon(pasajero_1)
+		formacion.agregarVagon(dormitorio_1)
+		formacion.agregarVagon(pasajero_2)
+		assert.that(formacion.estaOrganizada())		
+	}	
+}
