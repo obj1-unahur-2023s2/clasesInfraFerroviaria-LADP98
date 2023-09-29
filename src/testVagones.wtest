@@ -38,5 +38,5 @@ describe "Vagones" {
 		assert.notThat(pasajero_2.tieneBanios())
 		assert.notThat(carga_1.tieneBanios())
 		assert.that(dormitorio_1.tieneBanios())		
-	}			
+	}
 }

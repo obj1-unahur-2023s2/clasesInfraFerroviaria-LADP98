@@ -1,5 +1,7 @@
 import formacion.*
 import vagones.*
+import locomotoras.*
+
 describe "Formacion" {
 	const formacion = new Formacion()
 	const pasajero_1 = new Pasajero(ancho=4, largo=10, tieneBanios=true)
@@ -79,5 +81,49 @@ describe "Formacion" {
 		formacion.agregarVagon(dormitorio_1)
 		formacion.agregarVagon(pasajero_2)
 		assert.that(formacion.estaOrganizada())		
-	}	
+	}
+	
+	test "se verifica que la fomacion pesa 32800 kilos" {
+		const locomotora1 = new Locomotora(peso=1000,arrastre=7000,velocidadMax=100)
+		const locomotora2 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+		const locomotora3 = new Locomotora(peso=1000,arrastre=9000,velocidadMax=120)
+		formacion.agregarLocomotora(locomotora1)
+		formacion.agregarLocomotora(locomotora3)
+		formacion.agregarLocomotora(locomotora2)
+		assert.equals(32800,formacion.sumaDePesos())
+	}
+	
+	test "la formación es eficiente" {
+		const locomotora1 = new Locomotora(peso=1000,arrastre=7000,velocidadMax=100)
+		const locomotora2 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+		const locomotora3 = new Locomotora(peso=1000,arrastre=9000,velocidadMax=120)
+		formacion.agregarLocomotora(locomotora1)
+		formacion.agregarLocomotora(locomotora3)
+		assert.that(formacion.esEficiente())
+	}
+
+	test "la formación no es eficiente" {
+		const locomotora1 = new Locomotora(peso=1000,arrastre=7000,velocidadMax=100)
+		const locomotora2 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+		const locomotora3 = new Locomotora(peso=1000,arrastre=9000,velocidadMax=120)
+		formacion.agregarLocomotora(locomotora1)
+		formacion.agregarLocomotora(locomotora2)
+		assert.notThat(formacion.esEficiente())
+	}
+	
+	test "la formación no puede moverse" {
+		const locomotora2 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+		formacion.agregarLocomotora(locomotora2)
+		assert.notThat(formacion.puedeMoverse())
+	}		
+	
+	test "la formación puede moverse" {
+		const locomotora1 = new Locomotora(peso=1000,arrastre=20000,velocidadMax=100)
+		const locomotora2 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+		const locomotora3 = new Locomotora(peso=1000,arrastre=20000,velocidadMax=120)
+		formacion.agregarLocomotora(locomotora2)
+		formacion.agregarLocomotora(locomotora1)
+		formacion.agregarLocomotora(locomotora3)
+		assert.that(formacion.puedeMoverse())
+	}		
 }

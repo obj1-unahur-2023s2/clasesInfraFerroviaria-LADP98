@@ -1,0 +1,68 @@
+import formacion.*
+import vagones.*
+import locomotoras.*
+import depositos.*
+
+describe "test de depositos" {
+	const formacion1 = new Formacion()
+	const formacion2 = new Formacion()
+	const pasajero_1 = new Pasajero(ancho=4, largo=10, tieneBanios=true)
+	const pasajero_2 = new Pasajero(ancho=2, largo=7, tieneBanios=false, estaOrdenado=false)
+	const pasajero_3 = new Pasajero(ancho=6, largo=12, tieneBanios=true)
+	const pasajero_4 = new Pasajero(ancho=4, largo=10, tieneBanios=false, estaOrdenado=false)
+	const pasajero_1b = new Pasajero(ancho=4, largo=10, tieneBanios=true)
+	const pasajero_2b = new Pasajero(ancho=2, largo=7, tieneBanios=false, estaOrdenado=false)
+	const pasajero_3b = new Pasajero(ancho=6, largo=12, tieneBanios=true)
+	const pasajero_4b = new Pasajero(ancho=4, largo=10, tieneBanios=false, estaOrdenado=false)
+	const pasajero_5b = new Pasajero(ancho=4, largo=10, tieneBanios=false, estaOrdenado=false)
+	const carga_1 = new Carga(cargaMaximaIdeal=6800 , maderasSueltas=5)
+	const carga_2 = new Carga(cargaMaximaIdeal=10800 , maderasSueltas=5)
+	const dormitorio_1= new Dormitorio(cantidadCompartimientos=8, camasPorCompartimiento=3)
+	const dormitorio_2= new Dormitorio(cantidadCompartimientos=12, camasPorCompartimiento=4)
+	const locomotora1 = new Locomotora(peso=1000,arrastre=20000,velocidadMax=100)
+	const locomotora2 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+	const locomotora3 = new Locomotora(peso=1000,arrastre=20000,velocidadMax=120)
+	const locomotora4 = new Locomotora(peso=1000,arrastre=20000,velocidadMax=100)
+	const locomotora5 = new Locomotora(peso=1000,arrastre=4000,velocidadMax=70)
+	const locomotora6 = new Locomotora(peso=1000,arrastre=20000,velocidadMax=120)
+	const deposito_1 = new Deposito()
+	const deposito_2 = new Deposito()
+
+	method initialize() {
+		formacion1.agregarVagon(pasajero_1)
+		formacion1.agregarVagon(pasajero_2)
+		formacion1.agregarVagon(carga_1)
+		formacion1.agregarVagon(dormitorio_1)
+		formacion1.agregarLocomotora(locomotora1)
+		formacion2.agregarVagon(pasajero_3)
+		formacion2.agregarVagon(pasajero_4)
+		formacion2.agregarVagon(carga_2)
+		formacion2.agregarVagon(dormitorio_2)
+		formacion2.agregarVagon(pasajero_1b)
+		formacion2.agregarVagon(pasajero_2b)
+		formacion2.agregarVagon(pasajero_3b)
+		formacion2.agregarVagon(pasajero_4b)
+		formacion2.agregarVagon(pasajero_5b)
+		formacion2.agregarLocomotora(locomotora2)
+		formacion2.agregarLocomotora(locomotora3)
+		deposito_1.agregarFormaciones([formacion1])
+		deposito_2.agregarFormaciones([formacion2])
+		
+	}
+	
+	test "formacion1 no es compleja" {
+		assert.notThat(formacion1.esCompleja())
+	}
+	
+	test "formacion2 es compleja" {
+		assert.that(formacion2.esCompleja())
+	}
+	
+	test "deposito_1 no necesita conductor experimentado" {
+		assert.notThat(deposito_1.necesitaConductorExperimentado())
+	}
+	
+	test "deposito_2 si necesita conductor experimentado" {
+		assert.that(deposito_2.necesitaConductorExperimentado())
+	}
+}
